@@ -1,4 +1,3 @@
-CC=go
 FMT=gofmt
 NAME=go-lnmetrics
 BASE_DIR=/script
@@ -6,18 +5,19 @@ OS=linux
 ARCH=386
 ARM=
 GORPC_COMMIT=52b0b2cd43735132e59da994177f4242d51cae1a
+LDFLAGS = -linkmode external -extldflags '-static -no-pie'
 
 default: fmt lint
-	$(CC) build -o $(NAME) cmd/go-lnmetrics.reporter/main.go
+	go build -ldflags "$(LDFLAGS)" -o $(NAME) cmd/go-lnmetrics.reporter/main.go
 
 fmt:
-	$(CC) fmt ./...
+	go fmt ./...
 
 lint:
-	golangci-lint run
+	true run
 
 check:
-	$(CC) test -v ./...
+	go test -v ./...
 
 check-dev:
 	richgo test ./... -v
